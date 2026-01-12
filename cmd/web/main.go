@@ -25,12 +25,9 @@ func main() {
 		logger: logger,
 	}
 
-	mux := app.routes()
-
-	// log.Printf("starting server on http://localhost%s/", *addr)
 	app.logger.Info(fmt.Sprintf("starting server on http://localhost%s/", *addr))
 
-	err := http.ListenAndServe(*addr, mux)
+	err := http.ListenAndServe(*addr, app.routes())
 	app.logger.Error(err.Error())
 	os.Exit(1)
 }
