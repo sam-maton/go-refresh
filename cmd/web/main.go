@@ -9,11 +9,12 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/sam-maton/go-refresh/internal/models"
 )
 
 type application struct {
-	logger *slog.Logger
-	db     *sql.DB
+	logger   *slog.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -35,8 +36,8 @@ func main() {
 	defer db.Close()
 
 	app := application{
-		logger: logger,
-		db:     db,
+		logger:   logger,
+		snippets: &models.SnippetModel{DB: db},
 	}
 
 	app.logger.Info(fmt.Sprintf("starting server on http://localhost%s/", *addr))
@@ -48,7 +49,6 @@ func main() {
 
 func openDB(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", dsn)
-
 	if err != nil {
 		return nil, err
 	}
