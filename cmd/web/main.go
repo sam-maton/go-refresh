@@ -25,9 +25,7 @@ func main() {
 	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
 	flag.Parse()
 
-	logger := slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
-		AddSource: true,
-	}))
+	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
 	templateCache, err := newTemplateCache()
 	if err != nil {
