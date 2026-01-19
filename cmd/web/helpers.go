@@ -42,3 +42,7 @@ func (app *application) render(w http.ResponseWriter, r *http.Request, status in
 
 	buf.WriteTo(w)
 }
+
+func (app *application) newTemplateData(r *http.Request) templateData {
+	return templateData{}
+}
