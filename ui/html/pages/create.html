@@ -2,23 +2,61 @@
 <form action="/snippet/create" method="POST">
   <div>
     <label for="snippet-create-name">Title:</label>
-    <input type="text" name="title" id="snippet-create-name" />
+    {{with .Form.FieldErrors.title}}
+    <label for="snippet-create-name" class="error">{{.}}</label>
+    {{end}}
+    <input
+      type="text"
+      name="title"
+      id="snippet-create-name"
+      value="{{.Form.Title}}"
+    />
   </div>
   <div>
     <label for="snippet-create-content">Content:</label>
-    <textarea name="content" id="snippet-create-content"></textarea>
+    {{with .Form.FieldErrors.content}}
+    <label for="snippet-create-content" class="error">{{.}}</label>
+    {{end}}
+    <textarea name="content" id="snippet-create-content">
+{{.Form.Content}}</textarea
+    >
   </div>
   <div>
     <label for="snippet-create-365">Delete in:</label>
+    {{with .Form.FieldErrors.expires}}
+    <label for="snippet-create-365" class="error">{{.}}</label>
+    {{end}}
     <input
       id="snippet-create-365"
       type="radio"
       name="expires"
       value="365"
-      checked
+      {{if
+      (eq
+      .Form.Expires
+      365)}}checked{{end}}
     />
-    One Year <input type="radio" name="expires" value="7" /> One Week
-    <input type="radio" name="expires" value="1" /> One Day
+    One Year
+    <input
+      type="radio"
+      name="expires"
+      value="7"
+      {{if
+      (eq
+      .Form.Expires
+      7)}}checked{{end}}
+    />
+    One Week
+    <input
+      type="radio"
+      name="expires"
+      value="1"
+      {{if
+      (eq
+      .Form.Expires
+      1)}}checked{{end}}
+    />
+    One Day
   </div>
   <div>
     <input type="submit" value="Publish snippet" />
