@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 func commonHeaders(next http.Handler) http.Handler {
@@ -28,7 +29,9 @@ func (app *application) logRequest(next http.Handler) http.Handler {
 			uri    = r.URL.RequestURI()
 		)
 
-		app.logger.Info("recieved request", "ip", ip, "proto", proto, "method", method, "uri", uri)
+		if !strings.Contains(uri, "/static/") {
+			app.logger.Info("recieved request", "ip", ip, "proto", proto, "method", method, "uri", uri)
+		}
 
 		next.ServeHTTP(w, r)
 	})

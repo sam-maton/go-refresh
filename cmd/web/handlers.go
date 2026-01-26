@@ -101,12 +101,22 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 
 }
 
-func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {}
+func (app *application) userSignup(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
 
-func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {}
+func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
 
-func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {}
+func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
 
-func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {}
+func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
 
-func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {}
+func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello World")
+}
