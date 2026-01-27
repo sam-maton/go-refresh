@@ -33,3 +33,6 @@ go.work.sum
 
 # TLS
 tls/
+
+# Air
+tmp
