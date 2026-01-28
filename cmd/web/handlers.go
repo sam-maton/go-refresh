@@ -84,10 +84,10 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Title), "title", NOT_BLANK_ERROR)
 	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field cannot be more than 100 characters long")
 
-	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Content), "content", NOT_BLANK_ERROR)
 
 	form.CheckField(validator.PermittedValue(form.Expires, 1, 7, 365), "expires", "This field must equal 1, 7 or 365")
 
@@ -108,7 +108,7 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	app.sessionManager.Put(r.Context(), "flash", "Snippet successfully created!")
+	app.sessionManager.Put(r.Context(), FLASH_KEY, "Snippet successfully created!")
 
 	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
 
@@ -129,10 +129,10 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	form.CheckField(validator.NotBlank(form.Name), "name", "This field cannot be blank")
-	form.CheckField(validator.NotBlank(form.Email), "email", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Name), "name", NOT_BLANK_ERROR)
+	form.CheckField(validator.NotBlank(form.Email), "email", NOT_BLANK_ERROR)
 	form.CheckField(validator.Matches(form.Email, validator.EmailRX), "email", "Must be a valid email")
-	form.CheckField(validator.NotBlank(form.Password), "password", "This field cannot be blank")
+	form.CheckField(validator.NotBlank(form.Password), "password", NOT_BLANK_ERROR)
 	form.CheckField(validator.MinChars(form.Password, 8), "password", "Password must be at least 8 characters")
 
 	if !form.Valid() {
@@ -157,7 +157,7 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.sessionManager.Put(r.Context(), "flash", "Your signup was successful. Please log in.")
+	app.sessionManager.Put(r.Context(), FLASH_KEY, "Your signup was successful. Please log in.")
 
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
@@ -165,7 +165,7 @@ func (app *application) userSignupPost(w http.ResponseWriter, r *http.Request) {
 func (app *application) userLogin(w http.ResponseWriter, r *http.Request) {
 	data := app.newTemplateData(r)
 	data.Form = userLoginForm{}
-	app.render(w, r, http.StatusOK, "login.html", data)
+	app.render(w, r, http.StatusOK, LOGIN_PAGE, data)
 }
 
 func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
@@ -184,7 +184,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 	if !form.Valid() {
 		data := app.newTemplateData(r)
 		data.Form = form
-		app.render(w, r, http.StatusUnprocessableEntity, "login.html", data)
+		app.render(w, r, http.StatusUnprocessableEntity, LOGIN_PAGE, data)
 		return
 	}
 
@@ -208,7 +208,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	app.sessionManager.Put(r.Context(), "authenticatedUserID", id)
+	app.sessionManager.Put(r.Context(), AUTH_USER_KEY, id)
 
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
@@ -220,9 +220,9 @@ func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if app.sessionManager.Exists(r.Context(), "authenticatedUserID") {
-		app.sessionManager.Remove(r.Context(), "authenticatedUserID")
-		app.sessionManager.Put(r.Context(), "flash", "You have been logged out successfully")
+	if app.sessionManager.Exists(r.Context(), AUTH_USER_KEY) {
+		app.sessionManager.Remove(r.Context(), AUTH_USER_KEY)
+		app.sessionManager.Put(r.Context(), FLASH_KEY, "You have been logged out successfully")
 	}
 
 	http.Redirect(w, r, "/", http.StatusSeeOther)
