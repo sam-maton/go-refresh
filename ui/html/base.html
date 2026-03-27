@@ -22,7 +22,7 @@
     {{template "nav" .}}
     <main>
       {{with .Flash}}
-      <div class="flash">{{.}}</div>
+      <app-toast message="{{.}}"></app-toast>
       {{end}} {{template "main" .}}
     </main>
     <footer>Powered by <a href="https://golang.org/">Go</a></footer>
