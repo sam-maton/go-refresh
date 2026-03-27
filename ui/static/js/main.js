@@ -10,8 +10,8 @@ for (var i = 0; i < navLinks.length; i++) {
 class AppToast extends HTMLElement {
 	constructor() {
 		super();
-		var shadow = this.attachShadow({ mode: "open" });
-		var message = this.getAttribute("message") || "";
+		const shadow = this.attachShadow({ mode: "open" });
+		const message = this.getAttribute("message") || "";
 
 		shadow.innerHTML = `
 			<style>
@@ -44,23 +44,19 @@ class AppToast extends HTMLElement {
 					line-height: 1.2;
 				}
 			</style>
-			<div class="toast" role="status" aria-live="polite">
+			<div class="toast" role="status" aria-live="polite" aria-atomic="true">
 				<span></span>
 				<button type="button" aria-label="Close toast">×</button>
 			</div>
 		`;
 
-		var messageElement = shadow.querySelector("span");
-		if (messageElement) {
-			messageElement.textContent = message;
-		}
+		const messageElement = shadow.querySelector("span");
+		messageElement.textContent = message;
 
-		var closeButton = shadow.querySelector("button");
-		if (closeButton) {
-			closeButton.addEventListener("click", () => {
-				this.remove();
-			});
-		}
+		const closeButton = shadow.querySelector("button");
+		closeButton.addEventListener("click", () => {
+			this.remove();
+		});
 	}
 }
 
